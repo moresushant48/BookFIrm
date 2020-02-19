@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bookExtendedRelLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookExtendedView">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/imgDetailProductImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFCECECE"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/bi1" />
+
+            <TextView
+                android:id="@+id/txtDetailBookName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgDetailProductImage"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="4dp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/txtDetailBookDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDetailBookName"
+                android:backgroundTint="#FAFAFA"
+                android:padding="8dp"
+                android:text="@string/app_name"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/quantityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDetailBookDesc"
+                android:gravity="start"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/txtQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Quantity : "
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/etDetailBookQuantity"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/txtQuantity"
+                    android:inputType="number"
+                    android:text="1" />
+
+                <TextView
+                    android:id="@+id/txtMaxBookQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/etDetailBookQuantity"
+                    android:text="max"
+                    android:textSize="20dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sellerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quantityLayout"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="100dp"
+                android:gravity="center_vertical"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/imgAccount"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_account_circle_black_24dp"
+                    android:tint="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txtSoldBy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/imgAccount"
+                    android:text="Sold By" />
+
+                <TextView
+                    android:id="@+id/txtDetailBookSellerEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtSoldBy"
+                    android:layout_toEndOf="@id/imgAccount"
+                    android:fontFamily="serif"
+                    android:text="prai2855@gmail.com"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cardview_light_background"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/txtDetailBookPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:drawableStart="@drawable/rupee"
+            android:text="123"
+            android:textSize="38sp" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnBuyBook"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDetailBookPrice"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="4dp"
+            android:text="Buy Now"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

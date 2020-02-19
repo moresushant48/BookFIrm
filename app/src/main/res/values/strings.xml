@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BookFirm</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="DATABASE_VERSION">30</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_my_purchases">My Purchases</string>
+    <string name="nav_my_books">My Books</string>
+    <string name="nav_add_book">Add Book</string>
+    <string name="purpose">We serve to provide knowledge and education in the cheapest way. A platform where the resources of knowledge is available at the most Profitable Price. One can Rent or Sell, Notes / Books on BookFirm.</string>
+    <string name="nav_about_us">About us</string>
+
+
+</resources>
