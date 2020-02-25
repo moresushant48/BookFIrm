@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.bookfirm.R;
 import com.example.bookfirm.models.Book;
@@ -173,4 +172,16 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    /*
+    *   Decrease the quantity for that item.
+    * */
+    public void decreaseBookCount(int id, int newQuantity){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_QUANTITY, newQuantity);
+        db.update(TABLE_NAME, values, "id = ?", new String[]{String.valueOf(id)});
+    }
+
 }

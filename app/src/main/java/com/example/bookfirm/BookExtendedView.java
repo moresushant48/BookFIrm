@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.bookfirm.db.BookDatabaseHandler;
 import com.example.bookfirm.models.Book;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,6 +29,7 @@ public class BookExtendedView extends AppCompatActivity implements TextWatcher {
     private Book book;
     private String newPrice;
     private ImageView bookImage;
+    private ImageButton btnBack;
 
     private ExtendedFloatingActionButton btnBuyBook;
 
@@ -49,22 +52,17 @@ public class BookExtendedView extends AppCompatActivity implements TextWatcher {
         bookSellerEmail = findViewById(R.id.txtDetailBookSellerEmail);
         enteredQuantity = findViewById(R.id.etDetailBookQuantity);
         btnBuyBook = findViewById(R.id.btnBuyBook);
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         book = (Book) getIntent().getSerializableExtra("book");
-        if (book != null) {
-            Glide.with(this).load(book.getImage()).into(bookImage);
-            bookName.setText(book.getBookName());
-            bookDesc.setText(book.getBookDesc());
-            bookSellerEmail.setText(book.getUsername());
-            bookPrice.setText(String.valueOf(book.getPrice()));
-            bookAvailQuantity.setText("(Max " + book.getQuantity() + ")");
 
-            if (book.getSellType().equals("SELL"))
-                btnBuyBook.setText("Buy Now");
-            else
-                btnBuyBook.setText("Rent Now");
-
-        }
 
         btnBuyBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +78,6 @@ public class BookExtendedView extends AppCompatActivity implements TextWatcher {
                 intent.putExtra("selectedQuantity", enteredQuantity.getText().toString().trim());
                 startActivity(intent);
 
-                Snackbar.make(thisLayout, "Clicked...", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -119,5 +116,26 @@ public class BookExtendedView extends AppCompatActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (book != null) {
+            BookDatabaseHandler dbBook = new BookDatabaseHandler(this);
+            Book oneBookDetails = dbBook.getBook(book.getId());
+            Glide.with(this).load(oneBookDetails.getImage()).into(bookImage);
+            bookName.setText(oneBookDetails.getBookName());
+            bookDesc.setText(oneBookDetails.getBookDesc());
+            bookSellerEmail.setText(oneBookDetails.getUsername());
+            bookPrice.setText(String.valueOf(oneBookDetails.getPrice()));
+            bookAvailQuantity.setText("(Max " + oneBookDetails.getQuantity() + ")");
+
+            if (book.getSellType().equals("SELL"))
+                btnBuyBook.setText("Buy Now");
+            else
+                btnBuyBook.setText("Rent Now");
+
+        }
     }
 }

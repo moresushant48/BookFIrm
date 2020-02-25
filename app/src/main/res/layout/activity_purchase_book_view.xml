@@ -5,125 +5,154 @@
     android:id="@+id/purBookRelLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".PurchaseBookView">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
+    <RelativeLayout
+        android:id="@+id/relBackLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@android:color/white"
+            android:src="@drawable/ic_back_arrow"
+            android:tint="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="10dp">
+        android:layout_below="@id/relBackLayout">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/purBookImage"
-                android:layout_width="180dp"
-                android:layout_height="180dp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+
+                    <ImageView
+                        android:id="@+id/purBookImage"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@id/purBookImage"
+                        android:paddingLeft="8dp">
+
+                        <TextView
+                            android:id="@+id/purBookName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/app_name"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/purBookSelectedQuantity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/purBookName"
+                            android:layout_marginTop="10dp"
+                            android:text="123" />
+
+                        <TextView
+                            android:id="@+id/purBookFinalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="10dp"
+                            android:drawableStart="@drawable/rupee"
+                            android:text="123"
+                            android:textSize="22sp" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@id/purBookImage"
-                android:paddingLeft="8dp">
+                android:layout_below="@id/card"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/purBookName"
+                    android:id="@+id/txtPaymentMethod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/purBookSelectedQuantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/purBookName"
-                    android:layout_marginTop="10dp"
-                    android:text="123" />
-
-                <TextView
-                    android:id="@+id/purBookFinalPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:drawableStart="@drawable/rupee"
-                    android:text="123"
+                    android:layout_centerHorizontal="true"
+                    android:text="Choose Payment Method"
                     android:textSize="22sp" />
+
+                <RadioGroup
+                    android:id="@+id/rdGroupPaymentSelection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtPaymentMethod"
+                    android:padding="16dp">
+
+                    <RadioButton
+                        android:id="@+id/rdBtnPaytm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paytm"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/rdBtnBhimUpi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bhim UPI"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/rdBtnDebit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Debit Card"
+                        android:textSize="20sp" />
+
+                    <RadioButton
+                        android:id="@+id/rdBtnOnMeet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="On Meet"
+                        android:textSize="20sp" />
+
+                </RadioGroup>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/btnProceedPayment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rdGroupPaymentSelection"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="8dp"
+                    android:text="Proceed"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="18dp" />
 
             </RelativeLayout>
         </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/card"
-        android:layout_marginTop="16dp"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/txtPaymentMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Choose Payment Method"
-            android:textSize="22sp" />
-
-        <RadioGroup
-            android:id="@+id/rdGroupPaymentSelection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtPaymentMethod"
-            android:padding="16dp">
-
-            <RadioButton
-                android:id="@+id/rdBtnPaytm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Paytm"
-                android:textSize="20sp" />
-
-            <RadioButton
-                android:id="@+id/rdBtnBhimUpi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bhim UPI"
-                android:textSize="20sp" />
-
-            <RadioButton
-                android:id="@+id/rdBtnDebit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Debit Card"
-                android:textSize="20sp" />
-
-            <RadioButton
-                android:id="@+id/rdBtnOnMeet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="On Meet"
-                android:textSize="20sp" />
-
-        </RadioGroup>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/btnProceedPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rdGroupPaymentSelection"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
-            android:text="Proceed"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="18dp" />
-
-    </RelativeLayout>
-
+    </ScrollView>
 </RelativeLayout>

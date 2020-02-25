@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,14 +18,16 @@ import com.example.bookfirm.models.Book;
 
 import java.util.ArrayList;
 
-public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> {
+public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements Filterable {
 
     Context c;
-    ArrayList<Book> books;
+    private ArrayList<Book> books;
+    private ArrayList<Book> booksFull;
     OnBookClickListener onBookClickListener;
 
     public Adaptor(Context c, ArrayList<Book> books, OnBookClickListener onBookClickListener) {
         this.c = c;
+        booksFull = new ArrayList<>(books);
         this.books = books;
         this.onBookClickListener = onBookClickListener;
     }
@@ -51,6 +55,39 @@ public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> {
     @Override
     public int getItemCount() {
         return books.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+
+                ArrayList<Book> filesFiltered = new ArrayList<>();
+                String query = constraint.toString().toLowerCase().trim();
+                if (query.isEmpty()) {
+                    filesFiltered.addAll(booksFull);
+                } else {
+
+                    for (Book book: booksFull) {
+                        if (book.getBookName().toLowerCase().contains(query)) {
+                            filesFiltered.add(book);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filesFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                books.clear();
+                books.addAll((ArrayList<Book>) results.values);
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public interface OnBookClickListener {

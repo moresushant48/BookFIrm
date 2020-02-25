@@ -3,6 +3,7 @@ package com.example.bookfirm;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.bookfirm.db.BookDatabaseHandler;
 import com.example.bookfirm.models.Book;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -28,6 +30,7 @@ public class PurchaseBookView extends AppCompatActivity {
     private RadioGroup rdGroupPaymentSelection;
     private RadioButton rdBtnSelectedPaymentOption;
     private ExtendedFloatingActionButton btnProceedPayment;
+    private ImageButton btnBack;
 
     private RelativeLayout thisLayout;
 
@@ -48,6 +51,14 @@ public class PurchaseBookView extends AppCompatActivity {
         bookFinalPrice = findViewById(R.id.purBookFinalPrice);
         rdGroupPaymentSelection = findViewById(R.id.rdGroupPaymentSelection);
         btnProceedPayment = findViewById(R.id.btnProceedPayment);
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         /*
          * Getting all the data.
@@ -100,6 +111,8 @@ public class PurchaseBookView extends AppCompatActivity {
             @Override
             public void run() {
                 Snackbar.make(thisLayout, "Payment Received.", Snackbar.LENGTH_INDEFINITE).show();
+                decreaseQuantity(book.getId(), txtSelectedQuantity);
+
             }
         }, 2000);
 
@@ -111,6 +124,10 @@ public class PurchaseBookView extends AppCompatActivity {
         }, 4000);
 
         btnProceedPayment.setEnabled(false);
+    }
 
+    private void decreaseQuantity(Integer id, String txtSelectedQuantity) {
+        BookDatabaseHandler db = new BookDatabaseHandler(this);
+        db.decreaseBookCount(id, book.getQuantity() - Integer.parseInt(txtSelectedQuantity));
     }
 }
