@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("isLoggedIn", false).apply();
-                        getSharedPreferences("app", MODE_PRIVATE).edit().putBoolean("isFirstRun", true).apply();
                         startActivity(new Intent(MainActivity.this, LoginForm.class));
                     }
                 })
