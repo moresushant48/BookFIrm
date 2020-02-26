@@ -46,6 +46,7 @@ public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements F
         myHolder.mTitle.setText(books.get(i).getBookName());
         myHolder.mDesc.setText(books.get(i).getBookDesc());
         myHolder.mSellType.setText(books.get(i).getSellType());
+        myHolder.mPrice.setText(String.valueOf(books.get(i).getPrice()));
 
         Bitmap bmp = BitmapFactory.decodeByteArray(books.get(i).getImage(), 0, books.get(i).getImage().length);
         myHolder.mImageView.setImageBitmap(Bitmap.createScaledBitmap(bmp, 150,
@@ -129,7 +130,7 @@ public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements F
     public class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mImageView;
-        TextView mTitle, mDesc, mSellType;
+        TextView mTitle, mDesc, mSellType, mPrice;
         OnBookClickListener onBookClickListener;
 
         MyHolder(@NonNull View itemView, OnBookClickListener onBookClickListener) {
@@ -139,6 +140,7 @@ public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements F
             mTitle = itemView.findViewById(R.id.tv_title);
             mDesc = itemView.findViewById(R.id.tv_description);
             mSellType = itemView.findViewById(R.id.tv_selltype);
+            mPrice = itemView.findViewById(R.id.tv_price);
 
             this.onBookClickListener = onBookClickListener;
 

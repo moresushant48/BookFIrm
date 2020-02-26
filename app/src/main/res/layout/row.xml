@@ -27,17 +27,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/iv_image"
-                android:padding="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="Title"
-                    android:gravity="center_vertical"
                     android:textAllCaps="true"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -52,14 +52,32 @@
                     android:textColor="#a9a9a9"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_selltype"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|end"
-                    android:text="name"
-                    android:textSize="12sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/rupee"
+                        android:gravity="center_vertical"
+                        android:text="Price"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_selltype"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:text="SELL"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>
