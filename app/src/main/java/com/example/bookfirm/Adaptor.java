@@ -21,9 +21,9 @@ import java.util.ArrayList;
 public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements Filterable {
 
     Context c;
+    OnBookClickListener onBookClickListener;
     private ArrayList<Book> books;
     private ArrayList<Book> booksFull;
-    OnBookClickListener onBookClickListener;
 
     public Adaptor(Context c, ArrayList<Book> books, OnBookClickListener onBookClickListener) {
         this.c = c;
@@ -57,27 +57,59 @@ public class Adaptor extends RecyclerView.Adapter<Adaptor.MyHolder> implements F
         return books.size();
     }
 
+    public Filter getSellTypeFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                ArrayList<Book> booksFiltered = new ArrayList<>();
+                String query = charSequence.toString().toLowerCase().trim();
+                if (query.isEmpty()) {
+                    booksFiltered.addAll(booksFull);
+                } else {
+
+                    for (Book book : booksFull) {
+                        if (book.getSellType().toLowerCase().contains(query)) {
+                            booksFiltered.add(book);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = booksFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                books.clear();
+                books.addAll((ArrayList<Book>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
-                ArrayList<Book> filesFiltered = new ArrayList<>();
+                ArrayList<Book> booksFiltered = new ArrayList<>();
                 String query = constraint.toString().toLowerCase().trim();
                 if (query.isEmpty()) {
-                    filesFiltered.addAll(booksFull);
+                    booksFiltered.addAll(booksFull);
                 } else {
 
-                    for (Book book: booksFull) {
+                    for (Book book : booksFull) {
                         if (book.getBookName().toLowerCase().contains(query)) {
-                            filesFiltered.add(book);
+                            booksFiltered.add(book);
                         }
                     }
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = filesFiltered;
+                filterResults.values = booksFiltered;
                 return filterResults;
             }
 

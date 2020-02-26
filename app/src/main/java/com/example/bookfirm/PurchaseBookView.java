@@ -2,6 +2,7 @@ package com.example.bookfirm;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,14 +15,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.bookfirm.db.BookDatabaseHandler;
+import com.example.bookfirm.db.OrdersDatabaseHandler;
 import com.example.bookfirm.models.Book;
+import com.example.bookfirm.models.Order;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class PurchaseBookView extends AppCompatActivity {
 
+    private int userId;
     private Book book;
     private String txtFinalPrice, txtSelectedQuantity;
 
@@ -32,6 +37,8 @@ public class PurchaseBookView extends AppCompatActivity {
     private ExtendedFloatingActionButton btnProceedPayment;
     private ImageButton btnBack;
 
+    private OrdersDatabaseHandler dbOrder;
+
     private RelativeLayout thisLayout;
 
     @Override
@@ -40,6 +47,8 @@ public class PurchaseBookView extends AppCompatActivity {
         setContentView(R.layout.activity_purchase_book_view);
 
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        userId = getSharedPreferences("user", MODE_PRIVATE).getInt("id", 0);
 
         /*
          * Initiating everything up.
@@ -52,6 +61,8 @@ public class PurchaseBookView extends AppCompatActivity {
         rdGroupPaymentSelection = findViewById(R.id.rdGroupPaymentSelection);
         btnProceedPayment = findViewById(R.id.btnProceedPayment);
         btnBack = findViewById(R.id.btnBack);
+
+        dbOrder = new OrdersDatabaseHandler(this);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,45 +94,56 @@ public class PurchaseBookView extends AppCompatActivity {
                     Snackbar.make(thisLayout, "Please choose the payment option.", Snackbar.LENGTH_SHORT).show();
                 } else {
 
-                    proceedPaymentFromSelection();
+                    proceedPaymentFromSelection(rdGroupPaymentSelection.getCheckedRadioButtonId());
                 }
             }
         });
     }
 
-    private void proceedPaymentFromSelection() {
+    private void proceedPaymentFromSelection(int selectedPaymentOption) {
 
-        /*switch (selectedPaymentOption) {
-            case R.id.rdBtnPaytm: {
-                Snackbar.make(thisLayout, "Thank you.", Snackbar.LENGTH_SHORT).show();
-            }
-            case R.id.rdBtnBhimUpi: {
-                Snackbar.make(thisLayout, "Thank you.", Snackbar.LENGTH_SHORT).show();
-            }
+        switch (selectedPaymentOption) {
+            case R.id.rdBtnPaytm:
+            case R.id.rdBtnBhimUpi:
             case R.id.rdBtnDebit: {
-                Snackbar.make(thisLayout, "Thank you.", Snackbar.LENGTH_SHORT).show();
+
+                Snackbar.make(thisLayout, "Waiting for the Payment.", Snackbar.LENGTH_INDEFINITE).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(thisLayout, "Payment Received.", Snackbar.LENGTH_INDEFINITE).show();
+                        decreaseQuantity(book.getId(), txtSelectedQuantity);
+
+                    }
+                }, 2000);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(thisLayout, "Seller will contact you in a while. Thank you.", Snackbar.LENGTH_LONG).show();
+                    }
+                }, 4000);
+
             }
             case R.id.rdBtnOnMeet: {
-                Snackbar.make(thisLayout, "Thank you.", Snackbar.LENGTH_SHORT).show();
-            }
-        }*/
 
-        Snackbar.make(thisLayout, "Waiting for the Payment.", Snackbar.LENGTH_INDEFINITE).show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Snackbar.make(thisLayout, "Payment Received.", Snackbar.LENGTH_INDEFINITE).show();
-                decreaseQuantity(book.getId(), txtSelectedQuantity);
-
-            }
-        }, 2000);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
                 Snackbar.make(thisLayout, "Seller will contact you in a while. Thank you.", Snackbar.LENGTH_LONG).show();
+                decreaseQuantity(book.getId(), txtSelectedQuantity);
             }
-        }, 4000);
+        }
+
+        ArrayList<Order> orders = new ArrayList<>();
+        Order order = new Order();
+        order.setUser_id(userId);
+        order.setBook_id(book.getId());
+        order.setStatus("ORDERED");
+        orders.add(order);
+        dbOrder.addOrders(orders);
+
+        ArrayList<Order> orders1 = dbOrder.allOrders();
+        for (Order order1 : orders1) {
+            Log.e("Order : ", String.valueOf(order1.getId()));
+        }
 
         btnProceedPayment.setEnabled(false);
     }

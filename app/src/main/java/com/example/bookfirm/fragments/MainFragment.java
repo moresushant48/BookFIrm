@@ -1,6 +1,7 @@
 package com.example.bookfirm.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -11,9 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -24,9 +27,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.bookfirm.Adaptor;
 import com.example.bookfirm.R;
 import com.example.bookfirm.db.BookDatabaseHandler;
+import com.example.bookfirm.db.OrdersDatabaseHandler;
 import com.example.bookfirm.db.UserDatabaseHandler;
 import com.example.bookfirm.models.Book;
 import com.example.bookfirm.models.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -34,14 +39,16 @@ import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class MainFragment extends Fragment implements Adaptor.OnBookClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends Fragment implements Adaptor.OnBookClickListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
-    Context context = getContext();
-    OnBookDetailListener onBookDetailListener;
+    private Context context;
+    private OnBookDetailListener onBookDetailListener;
 
     private BookDatabaseHandler dbBook;
     private UserDatabaseHandler dbUser;
 
+    private TextView txtFilterText;
+    private FloatingActionButton btnFilterSellType;
     private RecyclerView rvBooks;
     private Adaptor adapterBooks;
     private ArrayList<Book> booksList;
@@ -61,7 +68,10 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
 
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.nav_home));
 
+        context = getContext();
         refreshBooks = view.findViewById(R.id.refreshBooks);
+        btnFilterSellType = view.findViewById(R.id.btnFilterSellType);
+        txtFilterText = view.findViewById(R.id.txtFilterText);
 
         rvBooks = view.findViewById(R.id.recyclerView);
         rvBooks.setLayoutManager(new LinearLayoutManager(context));
@@ -78,21 +88,13 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
             dbUser.addUser(getMyUser()); // if it the first run, add simple user to db.
         }
 
+        OrdersDatabaseHandler ordersDatabaseHandler = new OrdersDatabaseHandler(getContext());
+        ordersDatabaseHandler.getOrdersOfUser(getActivity().getSharedPreferences("user", MODE_PRIVATE).getInt("id", 0));
+
         refreshBooks.setOnRefreshListener(this);
         onRefresh();
-        /*ArrayList<User> users;
-        users = dbUser.allUsers();
-        for (User u : users) {
-            Log.e("Username : ", u.getEmail());
-            Log.e("Password : ", u.getPassword());
-        }*/
-/*
-        Log.e("Login Data ::::: ", "");
 
-        User user = dbUser.login("dhondesooraj@gmail.com","123456");
-        Log.e("Username : ", user.getEmail());
-        Log.e("Password : ", user.getPassword());
-        Log.e("Address : ", user.getAddress());*/
+        btnFilterSellType.setOnClickListener(this);
 
         return view;
     }
@@ -106,12 +108,10 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] bitMapData = stream.toByteArray();
-        return bitMapData;
+        return stream.toByteArray();
     }
 
-    private ArrayList<Book> getMyList()
-    {
+    private ArrayList<Book> getMyList() {
         ArrayList<Book> books = new ArrayList<>();
 
         Book m = new Book();
@@ -201,8 +201,36 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
         refreshBooks.setRefreshing(false);
     }
 
-    public interface OnBookDetailListener {
-        void onBookSent(Book book);
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btnFilterSellType) {
+
+            final String[] dialogItems = {"BUY/RENT", "RENT", "BUY"};
+
+            new AlertDialog.Builder(context)
+                    .setItems(dialogItems, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            switch (i) {
+                                case 0:
+                                    adapterBooks.getSellTypeFilter().filter("");
+                                    txtFilterText.setText(dialogItems[0]);
+                                    break;
+                                case 1:
+                                    adapterBooks.getSellTypeFilter().filter(dialogItems[1]);
+                                    txtFilterText.setText(dialogItems[1]);
+                                    break;
+                                case 2:
+                                    adapterBooks.getSellTypeFilter().filter("SELL");
+                                    txtFilterText.setText(dialogItems[2]);
+                                    break;
+                            }
+                        }
+                    })
+                    .create().show();
+
+        }
     }
 
     @Override
@@ -235,6 +263,11 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
     public void onResume() {
         super.onResume();
         onRefresh();
+        txtFilterText.setText("BUY/RENT");
+    }
+
+    public interface OnBookDetailListener {
+        void onBookSent(Book book);
     }
 }
 

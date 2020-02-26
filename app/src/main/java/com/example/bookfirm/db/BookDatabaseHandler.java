@@ -52,6 +52,13 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
                 + "password TEXT)";
 
         sqLiteDatabase.execSQL(TABLE_USERS);
+
+        String ORDERS_TABLE = "CREATE TABLE orders(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "user_id INTEGER, "
+                + "book_id INTEGER, "
+                + "status TEXT )";
+
+        sqLiteDatabase.execSQL(ORDERS_TABLE);
     }
 
     @Override
