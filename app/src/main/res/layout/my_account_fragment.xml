@@ -74,7 +74,9 @@
                     android:layout_gravity="center"
                     android:layout_margin="24dp"
                     android:drawableTop="@drawable/ic_home_black_24dp"
+                    android:drawableEnd="@drawable/ic_edit"
                     android:drawablePadding="10dp"
+                    android:drawableTint="@android:color/black"
                     android:text="Mumbai"
                     android:textSize="18dp" />
 

@@ -1,6 +1,7 @@
 package com.example.bookfirm.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +10,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.bookfirm.BottomSheets.UpdateAddress;
 import com.example.bookfirm.R;
 import com.example.bookfirm.db.UserDatabaseHandler;
 import com.example.bookfirm.models.User;
 
 import java.util.Objects;
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements View.OnClickListener {
 
     UserDatabaseHandler dbUser;
 
@@ -50,6 +53,34 @@ public class AccountFragment extends Fragment {
         txtAddress.setText(user.getAddress());
         txtMobileNo.setText(user.getMobileno());
 
+        txtAddress.setOnClickListener(this);
+
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == txtAddress.getId()){
+
+            openUpdateAddressBottomSheet();
+
+        }
+    }
+
+    private void openUpdateAddressBottomSheet() {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Update Address ?")
+                .setMessage("Do you really want to change your address ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        UpdateAddress updateAddress = new UpdateAddress();
+                        updateAddress.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "UpdateAddress");
+                    }
+                })
+                .setNegativeButton("No", null)
+                .create().show();
+
     }
 }

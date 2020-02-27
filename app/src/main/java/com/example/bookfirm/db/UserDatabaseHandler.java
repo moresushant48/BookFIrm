@@ -148,4 +148,12 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
         return user;
 
     }
+
+    public void updateAddress(int id, String newAddress){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_ADDRESS, newAddress);
+        db.update(TABLE_NAME, values, "id = ?", new String[]{String.valueOf(id)});
+    }
 }
