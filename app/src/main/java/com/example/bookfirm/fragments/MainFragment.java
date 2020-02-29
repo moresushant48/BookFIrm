@@ -6,12 +6,15 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,8 +50,8 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
     private BookDatabaseHandler dbBook;
     private UserDatabaseHandler dbUser;
 
-    private TextView txtFilterText;
-    private FloatingActionButton btnFilterSellType;
+    private TextView txtFilterSellType;
+    private FloatingActionButton btnFilterFAB;
     private RecyclerView rvBooks;
     private Adaptor adapterBooks;
     private ArrayList<Book> booksList;
@@ -70,8 +73,8 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
 
         context = getContext();
         refreshBooks = view.findViewById(R.id.refreshBooks);
-        btnFilterSellType = view.findViewById(R.id.btnFilterSellType);
-        txtFilterText = view.findViewById(R.id.txtFilterText);
+        btnFilterFAB = view.findViewById(R.id.btnFilterFAB);
+        txtFilterSellType = view.findViewById(R.id.txtFilterSellTypeText);
 
         rvBooks = view.findViewById(R.id.recyclerView);
         rvBooks.setLayoutManager(new LinearLayoutManager(context));
@@ -94,7 +97,9 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
         refreshBooks.setOnRefreshListener(this);
         onRefresh();
 
-        btnFilterSellType.setOnClickListener(this);
+        btnFilterFAB.setOnClickListener(this);
+//        btnFilterSellType.setOnClickListener(this);
+//        btnPriceFilter.setOnClickListener(this);
 
         return view;
     }
@@ -193,17 +198,24 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
         // Get the books list from database.
         booksList = dbBook.allBooks();
 
+        setBooksIntoRecycler(booksList);
+
+        txtFilterSellType.setText("BUY/RENT");
+        refreshBooks.setRefreshing(false);
+    }
+
+    private void setBooksIntoRecycler(ArrayList<Book> booksList) {
+
         if (booksList != null) {
             adapterBooks = new Adaptor(context, booksList, MainFragment.this);
             rvBooks.setAdapter(adapterBooks);
         }
 
-        refreshBooks.setRefreshing(false);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.btnFilterSellType) {
+       if (view.getId() == R.id.btnFilterFAB) {
 
             final String[] dialogItems = {"BUY/RENT", "RENT", "BUY"};
 
@@ -215,21 +227,20 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
                             switch (i) {
                                 case 0:
                                     adapterBooks.getSellTypeFilter().filter("");
-                                    txtFilterText.setText(dialogItems[0]);
+                                    txtFilterSellType.setText(dialogItems[0]);
                                     break;
                                 case 1:
                                     adapterBooks.getSellTypeFilter().filter(dialogItems[1]);
-                                    txtFilterText.setText(dialogItems[1]);
+                                    txtFilterSellType.setText(dialogItems[1]);
                                     break;
                                 case 2:
                                     adapterBooks.getSellTypeFilter().filter("SELL");
-                                    txtFilterText.setText(dialogItems[2]);
+                                    txtFilterSellType.setText(dialogItems[2]);
                                     break;
                             }
                         }
                     })
                     .create().show();
-
         }
     }
 
@@ -263,12 +274,10 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
     public void onResume() {
         super.onResume();
         onRefresh();
-        txtFilterText.setText("BUY/RENT");
     }
 
     public interface OnBookDetailListener {
         void onBookSent(Book book);
     }
 }
-
 
