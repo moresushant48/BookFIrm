@@ -10,6 +10,7 @@ import com.example.bookfirm.R;
 import com.example.bookfirm.models.Book;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BookDatabaseHandler extends SQLiteOpenHelper {
 
@@ -87,7 +88,7 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
         }
 
         Book book = new Book();
-        book.setId(cursor.getInt(0));
+        book.setId(Objects.requireNonNull(cursor).getInt(0));
         book.setBookName(cursor.getString(1) );
         book.setBookDesc(cursor.getString(2));
         book.setImage(cursor.getBlob(3));
@@ -96,17 +97,18 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
         book.setUsername(cursor.getString(6));
         book.setQuantity(cursor.getInt(7));
 
+        cursor.close();
         return book;
     }
 
     public ArrayList<Book> allBooks() {
 
-        ArrayList<Book> books = new ArrayList<Book>();
+        ArrayList<Book> books = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE_NAME;
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL_PRICE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Book book = null;
+        Book book;
 
         if(cursor.moveToFirst()) {
 
@@ -127,17 +129,18 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
 
         }
 
+        cursor.close();
         return books;
     }
 
     public ArrayList<Book> allBooksByUser(String username) {
 
-        ArrayList<Book> books = new ArrayList<Book>();
+        ArrayList<Book> books = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS, " username = ?", new String[] {username},
                 null, null, null, null);
-        Book book = null;
+        Book book;
 
         if(cursor.moveToFirst()) {
 
