@@ -1,5 +1,6 @@
 package com.example.bookfirm;
 
+import android.Manifest;
 import android.content.Intent;
 import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.bookfirm.db.UserDatabaseHandler;
 import com.example.bookfirm.models.User;
@@ -52,6 +55,12 @@ public class LoginForm extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.SEND_SMS)) {
+            Toast.makeText(this, "Your orders cannot be placed without SMS permission. Please Accept SMS permission from app settings.", Toast.LENGTH_LONG).show();
+            finish();
+        }
 
         Login.setOnClickListener(new View.OnClickListener() {
             @Override

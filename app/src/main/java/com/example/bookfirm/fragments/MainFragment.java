@@ -120,50 +120,10 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
         ArrayList<Book> books = new ArrayList<>();
 
         Book m = new Book();
-        m.setBookName("computer network notes");
-        m.setBookDesc("this is an sem 3 notes of B.Sc. IT");
+        m.setBookName("Computer Network Notes");
+        m.setBookDesc(" Sem 3 notes of B.Sc. IT");
         m.setImage(getBytesFromDrawable(R.drawable.computernetworks));
         m.setPrice(100);
-        m.setQuantity(4);
-        m.setSellType("SELL");
-        m.setUsername("pawan");
-        books.add(m);
-
-        m = new Book();
-        m.setBookName("Business Intelligence notes");
-        m.setBookDesc("this is an sem 6 notes of B.Sc. IT");
-        m.setImage(getBytesFromDrawable(R.drawable.businessintelligence));
-        m.setPrice(100);
-        m.setQuantity(4);
-        m.setSellType("RENT");
-        m.setUsername("pawan");
-        books.add(m);
-
-        m = new Book();
-        m.setBookName("Core Java notes");
-        m.setBookDesc("this is an sem 4 notes of B.Sc. IT");
-        m.setImage(getBytesFromDrawable(R.drawable.corejava));
-        m.setPrice(120);
-        m.setQuantity(4);
-        m.setSellType("SELL");
-        m.setUsername("pawan");
-        books.add(m);
-
-        m = new Book();
-        m.setBookName("Advance java notes");
-        m.setBookDesc("this is an sem 5 notes of B.Sc. IT");
-        m.setImage(getBytesFromDrawable(R.drawable.advancedjava));
-        m.setPrice(139);
-        m.setQuantity(4);
-        m.setSellType("RENT");
-        m.setUsername("pawan");
-        books.add(m);
-
-        m = new Book();
-        m.setBookName("Data Structure notes");
-        m.setBookDesc("this is an sem 3 notes of B.Sc. IT");
-        m.setImage(getBytesFromDrawable(R.drawable.datastructure));
-        m.setPrice(200);
         m.setQuantity(4);
         m.setSellType("SELL");
         m.setUsername("pawan");

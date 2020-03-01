@@ -2,11 +2,11 @@ package com.example.bookfirm;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.bookfirm.db.BookDatabaseHandler;
 import com.example.bookfirm.db.OrdersDatabaseHandler;
+import com.example.bookfirm.db.UserDatabaseHandler;
 import com.example.bookfirm.models.Book;
 import com.example.bookfirm.models.Order;
+import com.example.bookfirm.models.User;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -27,13 +29,13 @@ import java.util.Objects;
 public class PurchaseBookView extends AppCompatActivity {
 
     private int userId;
+    private User user;
     private Book book;
     private String txtFinalPrice, txtSelectedQuantity;
 
     private TextView bookName, bookFinalPrice, bookSelectedQuantity;
     private ImageView bookImage;
     private RadioGroup rdGroupPaymentSelection;
-    private RadioButton rdBtnSelectedPaymentOption;
     private ExtendedFloatingActionButton btnProceedPayment;
     private ImageButton btnBack;
 
@@ -49,6 +51,7 @@ public class PurchaseBookView extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         userId = getSharedPreferences("user", MODE_PRIVATE).getInt("id", 0);
+        user = new UserDatabaseHandler(PurchaseBookView.this).getUser(userId);
 
         /*
          * Initiating everything up.
@@ -113,6 +116,7 @@ public class PurchaseBookView extends AppCompatActivity {
                     public void run() {
                         Snackbar.make(thisLayout, "Payment Received.", Snackbar.LENGTH_INDEFINITE).show();
                         decreaseQuantity(book.getId(), txtSelectedQuantity);
+                        smsUser("Your payment for " + book.getBookName() + " of Rs. " + txtFinalPrice + " is done successfully.");
 
                     }
                 }, 2000);
@@ -121,6 +125,7 @@ public class PurchaseBookView extends AppCompatActivity {
                     @Override
                     public void run() {
                         Snackbar.make(thisLayout, "Seller will contact you in a while. Thank you.", Snackbar.LENGTH_LONG).show();
+                        smsUser("Your order for " + book.getBookName() + " has been placed.");
                     }
                 }, 4000);
 
@@ -128,6 +133,7 @@ public class PurchaseBookView extends AppCompatActivity {
             case R.id.rdBtnOnMeet: {
 
                 Snackbar.make(thisLayout, "Seller will contact you in a while. Thank you.", Snackbar.LENGTH_LONG).show();
+                smsUser("Your order for " + book.getBookName() + " has been placed.");
                 decreaseQuantity(book.getId(), txtSelectedQuantity);
             }
         }
@@ -146,6 +152,13 @@ public class PurchaseBookView extends AppCompatActivity {
         }
 
         btnProceedPayment.setEnabled(false);
+    }
+
+    private void smsUser(String textMessage) {
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage("+91" + user.getMobileno(), null, textMessage, null, null);
+
     }
 
     private void decreaseQuantity(Integer id, String txtSelectedQuantity) {
