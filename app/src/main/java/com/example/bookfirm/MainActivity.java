@@ -5,7 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.bookfirm.db.UserDatabaseHandler;
 import com.example.bookfirm.fragments.AboutUsFragment;
 import com.example.bookfirm.fragments.AccountFragment;
 import com.example.bookfirm.fragments.AddProductFragment;
@@ -25,12 +29,15 @@ import com.example.bookfirm.fragments.MainFragment;
 import com.example.bookfirm.fragments.MyProductsFragment;
 import com.example.bookfirm.fragments.MyPurchasesFragment;
 import com.example.bookfirm.models.Book;
+import com.example.bookfirm.models.User;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnBookDetailListener, MainFragment.OnMyBookDetailListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+
+    UserDatabaseHandler dbUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        dbUser = new UserDatabaseHandler(this);
+        User user = dbUser.getUser(getSharedPreferences("user", MODE_PRIVATE).getInt("id",0));
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = headerView.findViewById(R.id.txtNavUsername);
+        TextView email = headerView.findViewById(R.id.txtNavEmail);
+        username.setText(user.getUsername());
+        email.setText(user.getEmail());
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
