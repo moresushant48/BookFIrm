@@ -53,7 +53,7 @@ public class MyProductsFragment extends Fragment implements Adaptor.OnBookClickL
     private Drawable deleteDrawable;
     private int intrinsicWidth;
     private int intrinsicHeight;
-    private MainFragment.OnBookDetailListener onBookDetailListener;
+    private MainFragment.OnMyBookDetailListener onMyBookDetailListener;
     private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -139,6 +139,12 @@ public class MyProductsFragment extends Fragment implements Adaptor.OnBookClickL
         adaptorMyProducts = new Adaptor(getContext(), new ArrayList<Book>(), MyProductsFragment.this);
         rvMyProducts.setAdapter(adaptorMyProducts);
 
+        feedBooksIntoRecyclerView();
+
+        return view;
+    }
+
+    private void feedBooksIntoRecyclerView() {
         booksList = dbBook.allBooksByUser(loggedUsername);
 
         if (booksList != null) {
@@ -146,8 +152,6 @@ public class MyProductsFragment extends Fragment implements Adaptor.OnBookClickL
             rvMyProducts.setAdapter(adaptorMyProducts);
             new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvMyProducts);
         }
-
-        return view;
     }
 
     private void deleteItemFromListAndDatabase(int adapterPosition) {
@@ -191,15 +195,14 @@ public class MyProductsFragment extends Fragment implements Adaptor.OnBookClickL
 
     @Override
     public void onBookClick(int position) {
-        onBookDetailListener.onBookSent(booksList.get(position));
+        onMyBookDetailListener.onMyBookSent(booksList.get(position));
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainFragment.OnBookDetailListener) {
-            onBookDetailListener = (MainFragment.OnBookDetailListener) context;
+        if (context instanceof MainFragment.OnMyBookDetailListener) {
+            onMyBookDetailListener = (MainFragment.OnMyBookDetailListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement OnBookDetailListener");
         }
@@ -208,6 +211,12 @@ public class MyProductsFragment extends Fragment implements Adaptor.OnBookClickL
     @Override
     public void onDetach() {
         super.onDetach();
-        onBookDetailListener = null;
+        onMyBookDetailListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        feedBooksIntoRecyclerView();
     }
 }

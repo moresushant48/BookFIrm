@@ -46,6 +46,7 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
 
     private Context context;
     private OnBookDetailListener onBookDetailListener;
+    private OnMyBookDetailListener onMyBookDetailListener;
 
     private BookDatabaseHandler dbBook;
     private UserDatabaseHandler dbUser;
@@ -90,9 +91,6 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
             dbBook.addBooks(books); // if it the first run, add simple list of default books to db.
             dbUser.addUser(getMyUser()); // if it the first run, add simple user to db.
         }
-
-        OrdersDatabaseHandler ordersDatabaseHandler = new OrdersDatabaseHandler(getContext());
-        ordersDatabaseHandler.getOrdersOfUser(getActivity().getSharedPreferences("user", MODE_PRIVATE).getInt("id", 0));
 
         refreshBooks.setOnRefreshListener(this);
         onRefresh();
@@ -238,6 +236,10 @@ public class MainFragment extends Fragment implements Adaptor.OnBookClickListene
 
     public interface OnBookDetailListener {
         void onBookSent(Book book);
+    }
+
+    public interface OnMyBookDetailListener {
+        void onMyBookSent(Book book);
     }
 }
 

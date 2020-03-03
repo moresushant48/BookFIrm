@@ -194,4 +194,19 @@ public class BookDatabaseHandler extends SQLiteOpenHelper {
         db.update(TABLE_NAME, values, "id = ?", new String[]{String.valueOf(id)});
     }
 
+    public void updateQty(int bookId, int newQty) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_QUANTITY, newQty);
+        db.update(TABLE_NAME, values, "id = ?", new String[]{String.valueOf(bookId)});
+
+    }
+
+    public void updatePrice(Integer bookId, int newPrice) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_PRICE, newPrice);
+        db.update(TABLE_NAME, values, "id = ?", new String[]{String.valueOf(bookId)});
+    }
 }

@@ -27,7 +27,7 @@ import com.example.bookfirm.fragments.MyPurchasesFragment;
 import com.example.bookfirm.models.Book;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnBookDetailListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnBookDetailListener, MainFragment.OnMyBookDetailListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this, LoginForm.class));
         }
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.SEND_SMS)) {
                 Toast.makeText(this, "Your orders cannot be placed without SMS permission. Please Accept SMS permission from app settings.", Toast.LENGTH_LONG).show();
@@ -164,15 +164,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode){
+        switch (requestCode) {
             case 1000:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // continue
-                }else {
+                } else {
                     Toast.makeText(this, "Your orders cannot be placed without SMS permission. Please Accept SMS permission from app settings.", Toast.LENGTH_LONG).show();
                     finish();
                 }
                 return;
         }
+    }
+
+    @Override
+    public void onMyBookSent(Book book) {
+        Intent intent = new Intent(this, MyProductExtendedView.class);
+        intent.putExtra("book", book);
+        startActivity(intent);
     }
 }

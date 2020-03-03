@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PurchaseBookView"></activity>
+        <activity android:name=".MyProductExtendedView"></activity>
+        <activity android:name=".PurchaseBookView" />
         <activity android:name=".RegistrationForm" />
         <activity
             android:name=".MainActivity"

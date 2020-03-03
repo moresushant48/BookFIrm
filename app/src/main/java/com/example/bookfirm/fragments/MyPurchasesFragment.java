@@ -28,6 +28,7 @@ public class MyPurchasesFragment extends Fragment {
 
         rvMyPurchases = view.findViewById(R.id.rvMyPurchases);
 
+        
 
         return view;
     }

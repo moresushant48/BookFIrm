@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MyProductExtendedRelLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookExtendedView">
+
+    <RelativeLayout
+        android:id="@+id/relBackLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@android:color/white"
+            android:src="@drawable/ic_back_arrow"
+            android:tint="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relBackLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <ImageView
+                android:id="@+id/imgDetailProductImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="#FFCECECE"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/bi1" />
+
+            <TextView
+                android:id="@+id/txtDetailBookName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgDetailProductImage"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="4dp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/txtDetailBookDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDetailBookName"
+                android:backgroundTint="#FAFAFA"
+                android:padding="8dp"
+                android:text="@string/app_name"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/quantityLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDetailBookDesc"
+                android:gravity="start"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/txtQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Quantity"
+                    android:textSize="20dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnQtyDecrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="8dp"
+                    android:backgroundTint="@android:color/white"
+                    android:src="@drawable/ic_remove"
+                    app:borderWidth="2dp" />
+
+                <TextView
+                    android:id="@+id/txtMaxBookQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtQuantity"
+                    android:layout_centerHorizontal="true"
+                    android:text="21"
+                    android:textColor="@android:color/black"
+                    android:textSize="20dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnQtyIncrease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="8dp"
+                    android:backgroundTint="@android:color/white"
+                    android:src="@drawable/ic_add"
+                    app:borderWidth="2dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cardview_light_background"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/txtDetailBookPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:drawableStart="@drawable/rupee"
+            android:text="123"
+            android:textSize="38sp" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnChangePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Change Price"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
